@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Top Monitor</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%2338bdf8'/%3E%3Cpath d='M4 10h2V6H4v4Zm3 0h2V3H7v7Zm3 0h2V7h-2v3Z' fill='%2306111f'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="app-loading">
+<main class="shell">
+    <header class="hero">
+        <div>
+            <p class="eyebrow">top-monitor</p>
+            <h1>Server resources</h1>
+        </div>
+        <a id="home" class="button primary" href="#" hidden>Home</a>
+    </header>
+
+    <section class="panel controls" aria-label="Monitor controls">
+        <div class="control-group">
+            <span class="control-label">Live monitor</span>
+            <div class="toolbar">
+                <label class="refresh-chip">
+                    <span>Refresh every</span>
+                    <input id="refresh-interval" type="number" min="0" step="1" value="5" aria-label="Refresh interval in seconds">
+                    <span>sec</span>
+                </label>
+                <div id="process-limit-control" class="dropdown-chip">
+                    <span>Processes</span>
+                    <button id="process-limit-button" class="dropdown-button" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="process-limit-menu">
+                        <span id="process-limit-value">10</span>
+                        <span class="dropdown-chevron" aria-hidden="true"></span>
+                    </button>
+                    <div id="process-limit-menu" class="dropdown-menu" role="listbox" aria-label="Number of processes shown in each table" hidden>
+                        <button class="dropdown-option" type="button" role="option" data-value="5" aria-selected="false">5</button>
+                        <button class="dropdown-option" type="button" role="option" data-value="10" aria-selected="true">10</button>
+                        <button class="dropdown-option" type="button" role="option" data-value="20" aria-selected="false">20</button>
+                        <button class="dropdown-option" type="button" role="option" data-value="30" aria-selected="false">30</button>
+                        <button class="dropdown-option" type="button" role="option" data-value="50" aria-selected="false">50</button>
+                        <button class="dropdown-option" type="button" role="option" data-value="100" aria-selected="false">100</button>
+                        <button class="dropdown-option" type="button" role="option" data-value="all" aria-selected="false">All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="metadata" aria-label="Server metadata">
+            <div>
+                <span class="meta-label">Host</span>
+                <strong id="host-name">—</strong>
+            </div>
+            <div>
+                <span class="meta-label">Last sample</span>
+                <strong id="sample-time">—</strong>
+            </div>
+        </div>
+    </section>
+
+    <section id="message" class="message" hidden></section>
+
+    <section class="gauges grid" aria-label="Server resource gauges">
+        <article class="gauge-card card">
+            <p class="label">CPU load</p>
+            <div id="cpuGauge" class="gauge-face is-unavailable">
+                <div class="gauge-overlay"></div>
+                <div class="gauge-center">
+                    <p id="cpuValue" class="gauge-value">—</p>
+                    <p id="cpuDetail" class="gauge-detail">All cores</p>
+                </div>
+            </div>
+            <p id="cpuHint" class="gauge-summary">Waiting for metrics…</p>
+        </article>
+
+        <article class="gauge-card card">
+            <p class="label">RAM usage</p>
+            <div id="memoryGauge" class="gauge-face is-unavailable">
+                <div class="gauge-overlay"></div>
+                <div class="gauge-center">
+                    <p id="memoryValue" class="gauge-value">—</p>
+                    <p id="memoryDetail" class="gauge-detail">Used RAM</p>
+                </div>
+            </div>
+            <p id="memoryHint" class="gauge-summary">Waiting for metrics…</p>
+        </article>
+
+        <article class="gauge-card card">
+            <p class="label">Disk usage</p>
+            <div id="diskGauge" class="gauge-face is-unavailable">
+                <div class="gauge-overlay"></div>
+                <div class="gauge-center">
+                    <p id="diskValue" class="gauge-value">—</p>
+                    <p id="diskDetail" class="gauge-detail">Filesystem</p>
+                </div>
+            </div>
+            <p id="diskHint" class="gauge-summary">Waiting for metrics…</p>
+        </article>
+    </section>
+
+    <section class="tables-grid" aria-label="Top process tables">
+        <article class="panel table-panel">
+            <div class="section-title">
+                <div>
+                    <h2>Processes by CPU</h2>
+                </div>
+                <span class="table-note">% of total server capacity</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>PID</th>
+                        <th>Process</th>
+                        <th>CPU</th>
+                        <th>RAM</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cpu-processes">
+                    <tr><td colspan="4" class="empty-cell">Waiting for process data…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="panel table-panel">
+            <div class="section-title">
+                <div>
+                    <h2>Processes by RAM</h2>
+                </div>
+                <span class="table-note">Resident memory</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>PID</th>
+                        <th>Process</th>
+                        <th>RAM</th>
+                        <th>CPU</th>
+                    </tr>
+                    </thead>
+                    <tbody id="memory-processes">
+                    <tr><td colspan="4" class="empty-cell">Waiting for process data…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+</main>
+
+<div id="loading-screen" class="loading-screen" role="status" aria-live="polite">
+    <div class="loading-card">
+        <p class="eyebrow">top-monitor</p>
+        <h2>Loading server metrics</h2>
+        <p id="loading-message">Waiting for first data sample…</p>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

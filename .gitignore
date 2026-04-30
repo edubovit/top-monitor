@@ -1,0 +1,21 @@
+.gradle/
+build/
+out/
+*.class
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local browser verification artifacts
+.playwright-mcp/
+top-monitor-*.png

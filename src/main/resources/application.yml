@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: top-monitor
+
+server:
+  port: 20002
+
+home:
+  show: false
+  location: ""
